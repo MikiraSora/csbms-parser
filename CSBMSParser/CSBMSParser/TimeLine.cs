@@ -229,6 +229,8 @@ namespace CSBMSParser
             return false;
         }
 
+        public Note[] getHiddenNotes() => hiddennotes;
+
         public Note getHiddenNote(int lane)
         {
             return hiddennotes[lane];
@@ -348,6 +350,8 @@ namespace CSBMSParser
         {
             return section;
         }
+
+        public Note[] getNotes() => notes;
 
         public void setSection(double section)
         {
