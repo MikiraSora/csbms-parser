@@ -1,8 +1,0 @@
-F:\csbms-parser\CSBMSParser\CSBMSParser\obj\Debug\netstandard2.1\CSBMSParser.AssemblyInfoInputs.cache
-F:\csbms-parser\CSBMSParser\CSBMSParser\obj\Debug\netstandard2.1\CSBMSParser.AssemblyInfo.cs
-F:\csbms-parser\CSBMSParser\CSBMSParser\obj\Debug\netstandard2.1\CSBMSParser.csproj.CoreCompileInputs.cache
-F:\csbms-parser\CSBMSParser\CSBMSParser\bin\Debug\netstandard2.1\CSBMSParser.deps.json
-F:\csbms-parser\CSBMSParser\CSBMSParser\bin\Debug\netstandard2.1\CSBMSParser.dll
-F:\csbms-parser\CSBMSParser\CSBMSParser\bin\Debug\netstandard2.1\CSBMSParser.pdb
-F:\csbms-parser\CSBMSParser\CSBMSParser\obj\Debug\netstandard2.1\CSBMSParser.dll
-F:\csbms-parser\CSBMSParser\CSBMSParser\obj\Debug\netstandard2.1\CSBMSParser.pdb
