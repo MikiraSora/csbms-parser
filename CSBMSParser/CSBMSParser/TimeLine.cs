@@ -282,6 +282,10 @@ namespace CSBMSParser
 
         public void setBPM(double bpm)
         {
+            if(137337906 == this.time)
+            {
+
+            }
             this.bpm = bpm;
         }
 

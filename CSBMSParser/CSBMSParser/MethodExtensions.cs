@@ -15,7 +15,7 @@ namespace CSBMSParser
         public static KeyValuePair<T, D> lowerEntry<T, D>(this IDictionary<T, D> self, T key)
         {
             var cmp = Comparer<T>.Default;
-            var x = self.Keys.FirstOrDefault(x => cmp.Compare(x, key) < 0);
+            var x = self.Keys.LastOrDefault(x => cmp.Compare(x, key) < 0);
             return self.TryGetValue(x, out var d) ? new KeyValuePair<T, D>(x, d) : default;
         }
 

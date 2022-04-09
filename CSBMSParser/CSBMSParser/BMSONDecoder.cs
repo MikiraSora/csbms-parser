@@ -20,6 +20,10 @@ namespace CSBMSParser
 
         private Dictionary<int, TimeLineCache> tlcache = new Dictionary<int, TimeLineCache>();
 
+        public BMSONDecoder():this(BMSModel.LNTYPE_LONGNOTE)
+        {
+        }
+
         public BMSONDecoder(int lntype)
         {
             this.lntype = lntype;
