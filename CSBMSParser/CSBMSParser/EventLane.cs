@@ -97,17 +97,17 @@ namespace CSBMSParser
 
         public void mark(int time)
         {
-            for (; sectionbasepos < sections.Length - 1 && sections[sectionbasepos + 1].getTime() > time; sectionbasepos++)
+            for (; sectionbasepos < sections.Length - 1 && sections[sectionbasepos + 1].getMilliTime() > time; sectionbasepos++)
                 ;
-            for (; sectionbasepos > 0 && sections[sectionbasepos].getTime() < time; sectionbasepos--)
+            for (; sectionbasepos > 0 && sections[sectionbasepos].getMilliTime() < time; sectionbasepos--)
                 ;
-            for (; bpmbasepos < bpms.Length - 1 && bpms[bpmbasepos + 1].getTime() > time; bpmbasepos++)
+            for (; bpmbasepos < bpms.Length - 1 && bpms[bpmbasepos + 1].getMilliTime() > time; bpmbasepos++)
                 ;
-            for (; bpmbasepos > 0 && bpms[bpmbasepos].getTime() < time; bpmbasepos--)
+            for (; bpmbasepos > 0 && bpms[bpmbasepos].getMilliTime() < time; bpmbasepos--)
                 ;
-            for (; stopbasepos < stops.Length - 1 && stops[stopbasepos + 1].getTime() > time; stopbasepos++)
+            for (; stopbasepos < stops.Length - 1 && stops[stopbasepos + 1].getMilliTime() > time; stopbasepos++)
                 ;
-            for (; stopbasepos > 0 && stops[stopbasepos].getTime() < time; stopbasepos--)
+            for (; stopbasepos > 0 && stops[stopbasepos].getMilliTime() < time; stopbasepos--)
                 ;
             sectionseekpos = sectionbasepos;
             bpmseekpos = bpmbasepos;

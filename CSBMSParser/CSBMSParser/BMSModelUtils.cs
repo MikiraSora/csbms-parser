@@ -97,7 +97,7 @@ namespace CSBMSParser
             int count = 0;
             foreach (TimeLine tl in model.getAllTimeLines())
             {
-                if (tl.getTime() >= start && tl.getTime() < end)
+                if (tl.getMilliTime() >= start && tl.getMilliTime() < end)
                 {
                     switch (type)
                     {
@@ -188,7 +188,7 @@ namespace CSBMSParser
             {
                 tl.setBPM(tl.getBPM() * freq);
                 tl.setStop((long)(tl.getMicroStop() / freq));
-                tl.setTime((long)(tl.getMicroTime() / freq));
+                tl.setMicroTime((long)(tl.getMicroTime() / freq));
             }
         }
 
@@ -199,7 +199,7 @@ namespace CSBMSParser
             for (int i = 0; i < tl.Length; i++)
             {
                 int notes = 0;
-                for (int j = i; j < tl.Length && tl[j].getTime() < tl[i].getTime() + range; j++)
+                for (int j = i; j < tl.Length && tl[j].getMilliTime() < tl[i].getMilliTime() + range; j++)
                 {
                     notes += tl[j].getTotalNotes(model.getLntype());
                 }
@@ -213,13 +213,13 @@ namespace CSBMSParser
             long marginTime = 0;
             foreach (TimeLine tl in model.getAllTimeLines())
             {
-                if (tl.getTime() >= starttime)
+                if (tl.getMilliTime() >= starttime)
                 {
                     break;
                 }
                 if (tl.existNote())
                 {
-                    marginTime = starttime - tl.getTime();
+                    marginTime = starttime - tl.getMilliTime();
                     break;
                 }
             }
@@ -230,7 +230,7 @@ namespace CSBMSParser
                 foreach (TimeLine tl in model.getAllTimeLines())
                 {
                     tl.setSection(tl.getSection() + marginSection);
-                    tl.setTime(tl.getMicroTime() + marginTime * 1000);
+                    tl.setMicroTime(tl.getMicroTime() + marginTime * 1000);
                 }
 
                 TimeLine[] tl2 = new TimeLine[model.getAllTimeLines().Length + 1];

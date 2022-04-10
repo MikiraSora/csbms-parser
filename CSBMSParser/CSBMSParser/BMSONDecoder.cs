@@ -20,7 +20,7 @@ namespace CSBMSParser
 
         private Dictionary<int, TimeLineCache> tlcache = new Dictionary<int, TimeLineCache>();
 
-        public BMSONDecoder():this(BMSModel.LNTYPE_LONGNOTE)
+        public BMSONDecoder() : this(BMSModel.LNTYPE_LONGNOTE)
         {
         }
 
@@ -179,14 +179,30 @@ namespace CSBMSParser
                 }
                 else if (bpmy <= stopy)
                 {
-                    getTimeLine(bpmy, resolution).setBPM(bmson.bpm_events[bpmpos].bpm);
+                    if (bmson.bpm_events[bpmpos].bpm > 0)
+                    {
+                        getTimeLine(bpmy, resolution).setBPM(bmson.bpm_events[bpmpos].bpm);
+                    }
+                    else
+                    {
+                        log.Add(new DecodeLog(DecodeLog.State.WARNING,
+                                "negative BPMはサポートされていません - y : " + bmson.bpm_events[bpmpos].y + " bpm : " + bmson.bpm_events[bpmpos].bpm));
+                    }
                     bpmpos++;
                 }
                 else if (stopy != int.MaxValue)
                 {
-                    var tl2 = getTimeLine(stopy, resolution);
-                    tl2.setStop((long)((1000.0 * 1000 * 60 * 4 * bmson.stop_events[stoppos].duration)
-                            / (tl2.getBPM() * resolution)));
+                    if (bmson.stop_events[stoppos].duration >= 0)
+                    {
+                        var tl2 = getTimeLine(stopy, resolution);
+                        tl2.setStop((long)((1000.0 * 1000 * 60 * 4 * bmson.stop_events[stoppos].duration)
+                                / (tl2.getBPM() * resolution)));
+                    }
+                    else
+                    {
+                        log.Add(new DecodeLog(DecodeLog.State.WARNING,
+                                "negative STOPはサポートされていません - y : " + bmson.stop_events[stoppos].y + " bpm : " + bmson.stop_events[stoppos].duration));
+                    }
                     stoppos++;
                 }
             }
@@ -248,8 +264,8 @@ namespace CSBMSParser
                                 if (section == ln.getPair().getSection())
                                 {
                                     ln.getPair().setWav(id);
-                                    ln.getPair().setStarttime(starttime);
-                                    ln.getPair().setDuration(duration);
+                                    ln.getPair().setMicroStarttime(starttime);
+                                    ln.getPair().setMicroDuration(duration);
                                     assigned = true;
                                     break;
                                 }

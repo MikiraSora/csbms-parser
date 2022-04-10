@@ -40,7 +40,7 @@ namespace CSBMSParser
         /**
          * ノーツの演奏時間
          */
-        private int playtime;
+        private long playtime;
         /**
          * 同時演奏されるノート
          */
@@ -66,11 +66,6 @@ namespace CSBMSParser
             this.state = state;
         }
 
-        public int getStarttime()
-        {
-            return (int)(start / 1000);
-        }
-
         public long getMilliStarttime()
         {
             return start / 1000;
@@ -81,14 +76,9 @@ namespace CSBMSParser
             return start;
         }
 
-        public void setStarttime(long start)
+        public void setMicroStarttime(long start)
         {
             this.start = start;
-        }
-
-        public int getDuration()
-        {
-            return (int)(duration / 1000);
         }
 
         public long getMilliDuration()
@@ -101,17 +91,32 @@ namespace CSBMSParser
             return duration;
         }
 
-        public void setDuration(long duration)
+        public void setMicroDuration(long duration)
         {
             this.duration = duration;
         }
 
         public int getPlayTime()
         {
+            return (int)(playtime / 1000);
+        }
+
+        public long getMilliPlayTime()
+        {
+            return playtime / 1000;
+        }
+
+        public long getMicroPlayTime()
+        {
             return playtime;
         }
 
         public void setPlayTime(int playtime)
+        {
+            this.playtime = playtime * 1000;
+        }
+
+        public void setMicroPlayTime(long playtime)
         {
             this.playtime = playtime;
         }
@@ -141,7 +146,7 @@ namespace CSBMSParser
             return time;
         }
 
-        public void setTime(long time)
+        public void setMicroTime(long time)
         {
             this.time = time;
         }
@@ -158,11 +163,7 @@ namespace CSBMSParser
             }
 
             n.setSection(section);
-            n.setTime(time);
-            /* ???
-            layerednotes = Array.cio(layerednotes, layerednotes.length + 1);
-            layerednotes[layerednotes.length - 1] = n;
-            */
+            n.setMicroTime(time);
             layerednotes.Add(n);
         }
 

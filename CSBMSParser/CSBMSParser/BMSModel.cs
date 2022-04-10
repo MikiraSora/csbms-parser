@@ -61,13 +61,17 @@ namespace CSBMSParser
 		 * 判定ランク
 		 */
         private int judgerank = 2;
-
+        /**
+	     * 判定ランクのタイプ
+	     */
         private JudgeRankType judgerankType = JudgeRankType.BMS_RANK;
         /**
 		 * TOTAL値
 		 */
         private double total = 100;
-
+        /**
+	     * TOTALのタイプ
+	     */
         private TotalType totalType = TotalType.BMSON;
         /**
 		 * 標準ボリューム
@@ -300,7 +304,7 @@ namespace CSBMSParser
             long[] result = new long[times.Length];
             for (int i = 0; i < times.Length; i++)
             {
-                result[i] = times[i].getTime();
+                result[i] = times[i].getMilliTime();
             }
             return result;
         }
@@ -603,7 +607,7 @@ namespace CSBMSParser
             foreach (TimeLine tl in timelines)
             {
                 tlsb.Clear();
-                tlsb.Append(tl.getTime() + ":");
+                tlsb.Append(tl.getMilliTime() + ":");
                 bool write = false;
                 if (nowbpm != tl.getBPM())
                 {
@@ -636,7 +640,7 @@ namespace CSBMSParser
                         if (!ln.isEnd())
                         {
                             var lnchars = new[] { 'l', 'L', 'C', 'H' };
-                            tlsb.Append(lnchars[ln.getType()] + ln.getDuration());
+                            tlsb.Append(lnchars[ln.getType()] + ln.getMilliDuration());
                             write = true;
                         }
                     }

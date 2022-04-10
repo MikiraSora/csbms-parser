@@ -380,13 +380,13 @@ namespace CSBMSParser
                 switch (channel)
                 {
                     case P1_KEY_BASE:
-                        this.processData(line, (pos, data) =>
+                        this.processData(line, (DataProcessor)((pos, data) =>
                         {
                             // normal note, lnobj
                             var tl = getTimeLine(sectionnum + rate * pos);
                             if (tl.existNote(key))
                             {
-                                log.Add(new DecodeLog(DecodeLog.State.WARNING, "通常ノート追加時に衝突が発生しました : " + (key + 1) + ":" + tl.getTime()));
+                                log.Add(new DecodeLog(DecodeLog.State.WARNING, (string)("通常ノート追加時に衝突が発生しました : " + (key + 1) + ":" + tl.getMilliTime())));
                             }
                             if (data == lnobj)
                             {
@@ -438,8 +438,8 @@ namespace CSBMSParser
                                         }
                                         else
                                         {
-                                            log.Add(new DecodeLog(DecodeLog.State.WARNING, "LNオブジェクトの対応が取れません。レーン: " + key
-                                                    + " - Time(ms):" + tl2.getTime()));
+                                            log.Add(new DecodeLog(DecodeLog.State.WARNING, (string)("LNオブジェクトの対応が取れません。レーン: " + key
+                                                    + " - Time(ms):" + tl2.getMilliTime())));
                                             break;
                                         }
                                     }
@@ -449,7 +449,7 @@ namespace CSBMSParser
                             {
                                 tl.setNote(key, new NormalNote(wavmap[data]));
                             }
-                        });
+                        }));
                         break;
                     case P1_INVISIBLE_KEY_BASE:
                         this.processData(line, (pos, data) =>
@@ -458,7 +458,7 @@ namespace CSBMSParser
                         });
                         break;
                     case P1_LONG_KEY_BASE:
-                        this.processData(line, (pos, data) =>
+                        this.processData(line, (DataProcessor)((pos, data) =>
                         {
                             // long note
                             var tl = getTimeLine(sectionnum + rate * pos);
@@ -484,8 +484,8 @@ namespace CSBMSParser
                                     if (tl.existNote(key))
                                     {
                                         Note note = tl.getNote(key);
-                                        log.Add(new DecodeLog(DecodeLog.State.WARNING, "LN開始位置に通常ノートが存在します。レーン: "
-                                                + (key + 1) + " - Time(ms):" + tl.getTime()));
+                                        log.Add(new DecodeLog(DecodeLog.State.WARNING, (string)("LN開始位置に通常ノートが存在します。レーン: "
+                                                + (key + 1) + " - Time(ms):" + tl.getMilliTime())));
                                         if (note is NormalNote && note.getWav() != wavmap[data])
                                         {
                                             tl.addBackGroundNote(note);
@@ -529,8 +529,8 @@ namespace CSBMSParser
                                         else if (tl2.existNote(key))
                                         {
                                             Note note = tl2.getNote(key);
-                                            log.Add(new DecodeLog(DecodeLog.State.WARNING, "LN内に通常ノートが存在します。レーン: "
-                                                    + (key + 1) + " - Time(ms):" + tl2.getTime()));
+                                            log.Add(new DecodeLog(DecodeLog.State.WARNING, (string)("LN内に通常ノートが存在します。レーン: "
+                                                    + (key + 1) + " - Time(ms):" + tl2.getMilliTime())));
                                             tl2.setNote(key, null);
                                             if (note is NormalNote)
                                             {
@@ -547,8 +547,8 @@ namespace CSBMSParser
                                     LongNote ln = new LongNote(wavmap[data]);
                                     ln.setSection(double.MinValue);
                                     startln[key] = ln;
-                                    log.Add(new DecodeLog(DecodeLog.State.WARNING, "LN内にLN開始ノートを定義しようとしています : "
-                                            + (key + 1) + " - Section : " + tl.getSection() + " - Time(ms):" + tl.getTime()));
+                                    log.Add(new DecodeLog(DecodeLog.State.WARNING, (string)("LN内にLN開始ノートを定義しようとしています : "
+                                            + (key + 1) + " - Section : " + tl.getSection() + " - Time(ms):" + tl.getMilliTime())));
                                 }
                                 else
                                 {
@@ -557,15 +557,15 @@ namespace CSBMSParser
                                         tlcache[(startln[key].getSection())].timeline.setNote(key, null);
                                     }
                                     startln[key] = null;
-                                    log.Add(new DecodeLog(DecodeLog.State.WARNING, "LN内にLN終端ノートを定義しようとしています : "
-                                            + (key + 1) + " - Section : " + tl.getSection() + " - Time(ms):" + tl.getTime()));
+                                    log.Add(new DecodeLog(DecodeLog.State.WARNING, (string)("LN内にLN終端ノートを定義しようとしています : "
+                                            + (key + 1) + " - Section : " + tl.getSection() + " - Time(ms):" + tl.getMilliTime())));
                                 }
                             }
-                        });
+                        }));
                         break;
                     case P1_MINE_KEY_BASE:
                         // mine note
-                        this.processData(line, (pos, data) =>
+                        this.processData(line, (DataProcessor)((pos, data) =>
                         {
                             var tl = getTimeLine(sectionnum + rate * pos);
                             var insideln = tl.existNote(key);
@@ -588,10 +588,10 @@ namespace CSBMSParser
                             }
                             else
                             {
-                                log.Add(new DecodeLog(DecodeLog.State.WARNING, "地雷ノート追加時に衝突が発生しました : " + (key + 1) + ":"
-                                        + tl.getTime()));
+                                log.Add(new DecodeLog(DecodeLog.State.WARNING, (string)("地雷ノート追加時に衝突が発生しました : " + (key + 1) + ":"
+                                        + tl.getMilliTime())));
                             }
-                        });
+                        }));
                         break;
                     case LANE_AUTOPLAY:
                         // BGレーン

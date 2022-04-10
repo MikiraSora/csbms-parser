@@ -71,11 +71,6 @@ namespace CSBMSParser
             hiddennotes = new Note[notesize];
         }
 
-        public int getTime()
-        {
-            return (int)(time / 1000);
-        }
-
         public long getMilliTime()
         {
             return time / 1000;
@@ -86,26 +81,26 @@ namespace CSBMSParser
             return time;
         }
 
-        public void setTime(long time)
+        public void setMicroTime(long time)
         {
             this.time = time;
             foreach (Note n in notes)
             {
                 if (n != null)
                 {
-                    n.setTime(time);
+                    n.setMicroTime(time);
                 }
             }
             foreach (Note n in hiddennotes)
             {
                 if (n != null)
                 {
-                    n.setTime(time);
+                    n.setMicroTime(time);
                 }
             }
             foreach (Note n in bgnotes)
             {
-                n.setTime(time);
+                n.setMicroTime(time);
             }
         }
 
@@ -203,7 +198,7 @@ namespace CSBMSParser
                 return;
             }
             note.setSection(section);
-            note.setTime(time);
+            note.setMicroTime(time);
         }
 
         public void setHiddenNote(int lane, Note note)
@@ -214,7 +209,7 @@ namespace CSBMSParser
                 return;
             }
             note.setSection(section);
-            note.setTime(time);
+            note.setMicroTime(time);
         }
 
         public bool existHiddenNote()
@@ -247,7 +242,7 @@ namespace CSBMSParser
                 bgnotes = new List<Note>();
             }
             note.setSection(section);
-            note.setTime(time);
+            note.setMicroTime(time);
             /*
     bgnotes = Arrays.copyOf(bgnotes, bgnotes.length + 1);
     bgnotes[bgnotes.length - 1] = note;*/

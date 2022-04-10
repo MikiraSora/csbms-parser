@@ -461,7 +461,7 @@ namespace CSBMSParser
                 }
                 if (tl.Length > 0)
                 {
-                    if (tl[tl.Length - 1].getTime() >= model.getLastTime() + 30000)
+                    if (tl[tl.Length - 1].getMilliTime() >= model.getLastTime() + 30000)
                     {
                         log.Add(new DecodeLog(DecodeLog.State.WARNING, "最後のノート定義から30秒以上の余白があります"));
                     }
