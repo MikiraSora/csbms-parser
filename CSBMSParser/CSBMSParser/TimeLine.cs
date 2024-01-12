@@ -278,7 +278,7 @@ namespace CSBMSParser
 
 		public void setBPM(double bpm)
 		{
-			Debug.WriteLine(String.Format("section : {0:F6} bpm : {1:F6} -> {2:F6}", section, this.bpm, bpm));
+			//Debug.WriteLine(String.Format("section : {0:F6} bpm : {1:F6} -> {2:F6}", section, this.bpm, bpm));
 			this.bpm = bpm;
 		}
 
