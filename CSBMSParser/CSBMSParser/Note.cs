@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using static CSBMSParser.Layer;
 
 namespace CSBMSParser
 {
@@ -147,9 +148,9 @@ namespace CSBMSParser
         }
 
         public void setMicroTime(long time)
-        {
+		{
             this.time = time;
-        }
+		}
 
         public void addLayeredNote(Note n)
         {
