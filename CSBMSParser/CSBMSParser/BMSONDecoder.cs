@@ -579,7 +579,7 @@ namespace CSBMSParser
         private TimeLine getTimeLine(int y, double resolution)
         {
             // Timeをus単位にする場合はこのメソッド内部だけ変更すればOK
-            var tlc = tlcache[(y)];
+            var tlc = tlcache.TryGetValue(y, out var t) ? t : default;
             if (tlc != null)
             {
                 return tlc.timeline;

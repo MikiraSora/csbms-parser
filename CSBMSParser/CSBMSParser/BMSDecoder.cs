@@ -4,6 +4,7 @@ using System.Text;
 using System.Linq;
 using System.IO;
 using System.Security.Cryptography;
+using CSBMSParser.Bases;
 
 namespace CSBMSParser
 {
@@ -75,10 +76,10 @@ namespace CSBMSParser
         private Dictionary<int, double> scrolltable = new Dictionary<int, double>();
         private Dictionary<int, double> stoptable = new Dictionary<int, double>();
         private Dictionary<int, double> bpmtable = new Dictionary<int, double>();
-        private Queue<int> randoms = new Queue<int>();
-        private Queue<int> srandoms = new Queue<int>();
-        private List<int> crandom = new List<int>();
-        private List<bool> skip = new List<bool>();
+        private ArrayDeque<int> randoms = new ArrayDeque<int>();
+        private ArrayDeque<int> srandoms = new ArrayDeque<int>();
+        private ArrayDeque<int> crandom = new ArrayDeque<int>();
+        private ArrayDeque<bool> skip = new ArrayDeque<bool>();
 
         /**
          * 指定したBMSファイルをモデルにデコードする
@@ -151,7 +152,7 @@ namespace CSBMSParser
                             try
                             {
                                 var r = int.Parse(line.substring(8).Trim());
-                                randoms.Enqueue(r);
+                                randoms.Add(r);
                                 if (selectedRandom != null)
                                 {
                                     crandom.Add(selectedRandom[randoms.Count - 1]);
@@ -159,7 +160,7 @@ namespace CSBMSParser
                                 else
                                 {
                                     crandom.Add((int)(new Random().NextDouble() * r) + 1);
-                                    srandoms.Enqueue(crandom.Last());
+                                    srandoms.Add(crandom.GetLast());
                                 }
                             }
                             catch (Exception e)
@@ -188,9 +189,9 @@ namespace CSBMSParser
                         }
                         else if (matchesReserveWord(line, "ENDIF"))
                         {
-                            if (skip.Count != 0)
+                            if (skip.IsEmpty())
                             {
-                                skip.RemoveAt(skip.Count - 1);
+                                skip.RemoveLast();
                             }
                             else
                             {
@@ -201,14 +202,14 @@ namespace CSBMSParser
                         {
                             if (crandom.Count != 0)
                             {
-                                crandom.RemoveAt(crandom.Count - 1);
+                                crandom.RemoveLast();
                             }
                             else
                             {
                                 log.Add(new DecodeLog(DecodeLog.State.WARNING, "ENDRANDOMに対応するRANDOMが存在しません: " + line));
                             }
                         }
-                        else if (skip.Count != 0 || !skip.LastOrDefault())
+                        else if (skip.IsEmpty() || !skip.GetLast())
                         {
                             var c = line[(1)];
                             if ('0' <= c && c <= '9' && line.Length > 6)
@@ -385,7 +386,7 @@ namespace CSBMSParser
                         var index = line.IndexOf(' ');
                         if (index > 0 && line.Length > index + 1)
                         {
-                            model.getValues().Add(line.substring(1, index), line.substring(index + 1));
+                            model.getValues()[line.substring(1, index)] = line.substring(index + 1);
                         }
                     }
                     else if (line[0] == '@')
@@ -393,7 +394,7 @@ namespace CSBMSParser
                         var index = line.IndexOf(' ');
                         if (index > 0 && line.Length > index + 1)
                         {
-                            model.getValues().Add(line.substring(1, index), line.substring(index + 1));
+                            model.getValues()[line.substring(1, index)] = line.substring(index + 1);
                         }
                     }
                 }
@@ -416,7 +417,7 @@ namespace CSBMSParser
                 var lnendstatus = new LongNote[model.getMode().key];
                 var basetl = new TimeLine(0, 0, model.getMode().key);
                 basetl.setBPM(model.getBpm());
-                timelines.Add(0.0, new TimeLineCache(0.0, basetl));
+                timelines[0.0] = new TimeLineCache(0.0, basetl);
                 foreach (Section section in sections)
                 {
                     section.makeTimeLines(wm, bm, timelines, lnlist, lnendstatus);
