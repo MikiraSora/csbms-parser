@@ -32,10 +32,10 @@ namespace CSBMSParser
         public override BMSModel decode(ChartInformation info)
         {
             this.lntype = info.lntype;
-            return decode(info.path);
+            return decode(info.path, info.encoding);
         }
 
-        public override BMSModel decode(string f)
+        public override BMSModel decode(string f, Encoding encoding)
         {
             Logger.getGlobal().fine("BMSONファイル解析開始 :" + f);
             log.Clear();
@@ -48,7 +48,7 @@ namespace CSBMSParser
             {
                 var digest = SHA256.Create();
                 var data = File.ReadAllBytes(f);
-                var text = Encoding.UTF8.GetString(data);
+                var text = encoding.GetString(data);
 
                 bmson = JsonConvert.DeserializeObject<Bmson.Bmson>(text);
                 model.setSHA256(BMSDecoder.convertHexString(digest.ComputeHash(data)));
@@ -567,7 +567,7 @@ namespace CSBMSParser
             Logger.getGlobal().fine("BMSONファイル解析完了 :" + f + " - TimeLine数:" + tlcache.Count + " 時間(ms):"
                     + ((DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000 - currnttime));
 
-            model.setChartInformation(new ChartInformation(f, lntype, null));
+            model.setChartInformation(new ChartInformation(f, lntype, null, encoding));
             return model;
         }
 

@@ -34,12 +34,12 @@ namespace CSBMSParser
             // 予約語の登録
         }
 
-        public override BMSModel decode(string f)
+        public override BMSModel decode(string f, Encoding encoding)
         {
             Logger.getGlobal().fine("BMSファイル解析開始 :" + f);
             try
             {
-                BMSModel model = this.decode(f, File.ReadAllBytes(f), f.ToLower().EndsWith(".pms"), null);
+                BMSModel model = this.decode(f, File.ReadAllBytes(f), f.ToLower().EndsWith(".pms"), null, encoding);
                 if (model == null)
                 {
                     return null;
@@ -60,7 +60,7 @@ namespace CSBMSParser
             try
             {
                 this.lntype = info.lntype;
-                return decode(info.path, File.ReadAllBytes(info.path), info.path.ToLower().EndsWith(".pms"), info.selectedRandoms);
+                return decode(info.path, File.ReadAllBytes(info.path), info.path.ToLower().EndsWith(".pms"), info.selectedRandoms, info.encoding);
             }
             catch (IOException e)
             {
@@ -87,9 +87,9 @@ namespace CSBMSParser
          * @param data
          * @return
          */
-        public BMSModel decode(byte[] data, bool ispms, int[] random)
+        public BMSModel decode(byte[] data, bool ispms, int[] random, Encoding encoding)
         {
-            return this.decode(null, data, ispms, random);
+            return this.decode(null, data, ispms, random, encoding);
         }
 
         /**
@@ -98,7 +98,7 @@ namespace CSBMSParser
          * @param data
          * @return
          */
-        private BMSModel decode(string path, byte[] data, bool ispms, int[] selectedRandom)
+        private BMSModel decode(string path, byte[] data, bool ispms, int[] selectedRandom, Encoding encoding)
         {
             log.Clear();
             var time = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
@@ -108,7 +108,7 @@ namespace CSBMSParser
             bpmtable.Clear();
 
             var memoryStream = new MemoryStream(data);
-            using var br = new StreamReader(memoryStream);
+            using var br = new StreamReader(memoryStream, encoding);
 
             int maxsec = 0;
             // BMS読み込み、ハッシュ値取得
@@ -171,7 +171,7 @@ namespace CSBMSParser
                         else if (matchesReserveWord(line, "IF"))
                         {
                             // RANDOM分岐開始
-                            if (crandom.Count != 0)
+                            if (!crandom.IsEmpty())
                             {
                                 try
                                 {
@@ -189,7 +189,7 @@ namespace CSBMSParser
                         }
                         else if (matchesReserveWord(line, "ENDIF"))
                         {
-                            if (skip.IsEmpty())
+                            if (!skip.IsEmpty())
                             {
                                 skip.RemoveLast();
                             }
@@ -200,7 +200,7 @@ namespace CSBMSParser
                         }
                         else if (matchesReserveWord(line, "ENDRANDOM"))
                         {
-                            if (crandom.Count != 0)
+                            if (!crandom.IsEmpty())
                             {
                                 crandom.RemoveLast();
                             }
@@ -495,7 +495,7 @@ namespace CSBMSParser
                     }
                 }
 
-                model.setChartInformation(new ChartInformation(path, lntype, selectedRandom));
+                model.setChartInformation(new ChartInformation(path, lntype, selectedRandom, encoding));
                 return model;
             }
             catch (IOException e)

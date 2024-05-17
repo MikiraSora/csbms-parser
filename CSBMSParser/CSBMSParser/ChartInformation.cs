@@ -12,11 +12,14 @@ namespace CSBMSParser
 
         public int[] selectedRandoms;
 
-        public ChartInformation(string path, int lntype, int[] selectedRandoms)
+        public Encoding encoding;
+
+        public ChartInformation(string path, int lntype, int[] selectedRandoms, Encoding encoding)
         {
             this.path = path;
             this.lntype = lntype;
             this.selectedRandoms = selectedRandoms;
+            this.encoding = encoding;
         }
     }
 }

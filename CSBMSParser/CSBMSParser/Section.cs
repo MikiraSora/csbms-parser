@@ -148,8 +148,7 @@ namespace CSBMSParser
                     case STOP:
                         this.processData(line, (pos, data) =>
                         {
-                            double st = stoptable[(data)];
-                            if (st != default)
+                            if (stoptable.TryGetValue(data,out var st))
                             {
                                 stop[pos] = st;
                             }
@@ -163,8 +162,7 @@ namespace CSBMSParser
                     case SCROLL:
                         this.processData(line, (pos, data) =>
                         {
-                            double st = scrolltable[(data)];
-                            if (st != default)
+                            if (scrolltable.TryGetValue(data, out var st))
                             {
                                 scroll[pos] = st;
                             }

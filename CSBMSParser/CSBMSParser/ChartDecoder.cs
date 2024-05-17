@@ -24,9 +24,9 @@ namespace CSBMSParser
 		 *            譜面ファイルのパス
 		 * @return 変換したBMSModel。失敗した場合はnull
 		 */
-        public virtual BMSModel decode(string path)
+        public virtual BMSModel decode(string path, Encoding encoding)
         {
-            return decode(new ChartInformation(path, lntype, null));
+            return decode(new ChartInformation(path, lntype, null, encoding));
         }
 
         /**

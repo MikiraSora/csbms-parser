@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace CSBMSParser.TestConsole
 {
@@ -9,8 +10,10 @@ namespace CSBMSParser.TestConsole
     {
         static void Main(string[] args)
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
             var decoder = new BMSDecoder();
-            var model = decoder.decode(@"F:\bms\problematic BMS\I will (rock you)\iwillkill_re.bms");
+            var model = decoder.decode(@"F:\bms\problematic BMS\職権を乱用するRainbow\ubmchallenge (2).bms", encoding: System.Text.Encoding.GetEncoding("Shift-JIS"));
             var timeline = model.getAllTimeLines();
 
             var notes = timeline.Select(x => x.getBackGroundNotes().Concat(x.getNotes().Concat(x.getHiddenNotes()))).SelectMany(x => x).OfType<NormalNote>().OrderBy(x => x.getMicroTime()).ToArray();
